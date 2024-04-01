@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} BlogDetails {% endblock title %}
+{% block content %}
+
+<div class="container">
+  <h2 class="text-center text-dark my-3"> <b>Title :</b> {{ POSTSDETAILS.title}} </h2> <hr/>
+
+  <div class="mt-5 my-3">
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <a class="text-white btn btn-dark" href="{% url 'PostListView' %}"> 
+                        Back
+                    </a>
+                </div>
+                <div class="d-flex justify-content-evenly align-items-center gap-3">
+                    <div>
+                        <a class="text-dark btn btn-warning" href="{% url 'PostUpdateView' POSTSDETAILS.id %}">
+                        Edit
+                        </a>
+                    </div>
+                    <div>
+                        <a class="text-white btn btn-danger" href="{% url 'PostDeleteView' POSTSDETAILS.id %}">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <span class="text-dark">
+                Created at: {{ POSTSDETAILS.created_at }}
+            </span>                     
+            <img src="{{ POSTSDETAILS.images.url }}" class="img img-fluid w-100  rounded" alt="Post images">
+            <div class="row">
+                <div class="d-flex gap-1">
+                    {% for tag in POSTSDETAILS.tags.all %}
+                        <a href="" class="mr-1 mt-2 mb-0">@{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div> 
+        <div class="card border-0">
+            <p class="card-text mt-3">{{ POSTSDETAILS.content }}</p>
+        </div>
+        
+        <!-- Comments forms -->
+        <div class="my-3">
+            <h1>Leave Comment:</h1>
+            <form action="{% url 'CommentsView' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group col-md-6">
+                    <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" placeholder="Enter your comment" rows="3"></textarea>
+                    <input type="hidden" name="postid" value="{{ POSTSDETAILS.id }}">
+                    <input type="hidden" name="parentid" value="">
+                </div>
+                <button type="submit" class="btn btn-success my-2">Comment</button>
+            </form>
+        </div>
+
+        <div class="row mb-5 pb-5">
+            {% for comment in COMMENTS %}
+                <div class="col-md-1">
+                    <img src="{{ comment.user.userpfofile.image.url }}" class="img-thumbnail" alt="">
+                </div> 
+                <div class="col-md-11">
+                   <div class="text-dark fw-bold">{{ comment.author.username }} <small class="bedge bedge-secondary">{{ comment.created_at }}</small> <button onclick="repliesFunction()" class="btn btn-primary btn-sm my-2">Reply</button> </div> 
+                    <div class="my-1 text-secondary"><b>{{ comment.body }}</b></div>  
+                </div> 
+            
+                <!-- replies forms -->
+                <form id="repliesfunctions" action="{% url 'CommentsView' %}" method="POST" style="display:none">
+                    {% csrf_token %}
+                    <div class="form-group col-md-6 ml-3">
+                        <input class="form-control" type="text" name="comment" placeholder="Enter your replies">
+                        <input type="hidden" name="postid" value="{{ POSTSDETAILS.id }}">
+                        <input type="hidden" name="parentid" value="{{ comment.id }}">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm my-2">Reply</button>
+                </form>
+                
+                {% for replies in REPLIES %}
+                    <div class="row ml-3">
+                        <div class="col-md-1">
+                            <img src="{{ reply.user.userprofile.image.url }}" class="img-thumbnail" alt="">
+                        </div>
+                        <div class="col-md-11">
+                           <div class="text-dark fw-bold">{{ replies.author.username }} <span class="bedge bedge-secondary">{{ replies.created_at }}</span> </div>
+                            <div class="my-1 text-secondary">{{ replies.body }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>            
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% comment %} 3. **Recipe Sharing Website**: Develop a platform where users can share their favorite recipes. Users should be able to create, view, edit, and delete recipes. You can also include features like recipe categories, ingredient lists, and ratings. {% endcomment %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} CategoryForm {% endblock title %}
+{% block content %}
+
+<div class="container">
+  <h2 class="text-center text-dark my-3"> Category Create Form</h2> <hr/>
+    <form class="offset-md-3 my-4" method="POST">
+        {% csrf_token %}
+        <div class="col-md-9 mb-3">
+          {{FORMS|crispy}}
+          {{FORMS.erros}}
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+</div>
+
+{% endblock content %}

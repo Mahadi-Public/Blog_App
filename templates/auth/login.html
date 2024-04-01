@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Login  {% endblock title %}  
+{% block navbar %} {% endblock navbar %}
+
+{% block content %}
+    <div class="container">
+        <div class="row centered py-4 align-items-center justify-content-center">
+            <form class='col-md-6' action="{% url "LoginPageView" %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group my-2">
+                    <h4 class='text-muted text-dark'>Login to your account</h4>
+                </div>
+                <hr>
+                <div class="form-group">
+                    {{ form|crispy }}
+                </div>
+                <div class="form-group my-3 d-grid gap-2">
+                    <button class='btn btn-dark' type="submit">Login</button>
+                </div>
+                <div class="my-3 mb-2 d-flex flex-column align-items-center justify-content-center">
+                    <p class="m-0">
+                        Don't have an account,Please<a href="{% url 'SingupPageView' %}" class="text-decoration-none px-2 text-dark"><u>Register Account</u></a>
+                    </p>
+                    <p class="m-0">
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none px-3 text-dark">Forget Password</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

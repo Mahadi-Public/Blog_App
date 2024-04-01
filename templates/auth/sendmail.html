@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+Hi,{{request.user.username}},
+You have Successfully created your account,Please click on the link to confirm your registration...
+http://{{ domain }}{% url 'activateAccountView' uidb64=uid token=token %}
+
+If you think, it's not you .Then just ignore this email
+
+{% endautoescape %}

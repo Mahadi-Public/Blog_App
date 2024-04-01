@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %} BlogList {% endblock title %} 
+{% block content %}
+
+<div class="container pb-5 pt-3">
+  <div class="d-flex justify-content-between align-items-center header-post">
+    <h2 class="text-center text-dark" > PostList </h2> 
+    <form class="d-flex" role="search" method="GET">
+      <select class="form-select me-3" name="search" aria-label="Default select example">
+        <option selected>Chosse Category</option>
+        {% for categories in CATEGORIES %}
+        <option value="{{ categories.name }}">{{ categories.name }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-outline-dark" type="submit">Search</button>
+    </form>
+  </div>
+  <hr/>
+  <div class="row gap-3  ms-3">
+    {% for post  in POSTS %}
+      <div class="card mt-3 " style="width: 16rem;">
+          <img src="{{ post.images.url }}" class="card-images img img-fuild " alt="Post images">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <h6 class="card-text">{{ post.content|truncatechars:25 }}</h6>
+            {% for commontags in COMMONTAGS %}
+              <a href"#" class="text-decoration-none">@{{ commontags }}</a>
+            {% endfor %}
+            <a href="{% url 'PostDetailsView' post.id %}" class="btn btn-dark mt-3">Read more</a>
+          </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}
+
+
